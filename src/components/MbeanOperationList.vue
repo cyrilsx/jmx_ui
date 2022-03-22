@@ -1,17 +1,22 @@
 <template>
-  <h4>Operation</h4>
-  <table v-if="this.op">
-    <thead>
-    <td>Name</td>
-    <td>Input</td>
-    </thead>
-    <tr v-for="op in this.operations" :key="op">
-      <td>{{ op.name }}</td>
-      <td>
-        <mbean-operation :args="op.args" :desc="op.desc" :readUrl=op.readUrl />
-      </td>
-    </tr>
-  </table>
+  <va-card color="#172226">
+    <va-card-title>Operation</va-card-title>
+    <va-card-content>
+      <div class="va-table-responsive">
+        <table v-if="this.op" class="va-table">
+          <thead>
+          <td>Name</td>
+          <td>Arguments</td>
+          <td></td>
+          </thead>
+          <tr v-for="op in this.operations" :key="op">
+            <td>{{ op.name }}</td>
+            <mbean-operation :mbean="op.mbeanId" :name="op.name" :args="op.args" :desc="op.desc" :writeUrl=op.writeUrl />
+          </tr>
+        </table>
+      </div>
+    </va-card-content>
+  </va-card>
 </template>
 
 <script>
@@ -36,7 +41,9 @@ export default {
         args: value.args,
         ret: value.ret,
         desc: value.desc,
-        readUrl: "http://localhost:8080/actuator/jolokia/read/" + currentId + "/" + key
+        mbeanId: currentId,
+        readUrl: "http://localhost:8080/actuator/jolokia/read/" + currentId + "/" + key,
+        writeUrl: "http://localhost:8080/actuator/jolokia/exec/" + (currentId).toString('base64')
       })
     }, []);
   }

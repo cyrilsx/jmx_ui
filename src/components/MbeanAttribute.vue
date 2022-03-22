@@ -1,11 +1,13 @@
 <template>
-  <span>
+  <td>
     {{ this.desc }}:
+  </td>
+  <td>
     <input v-if="type === 'java.lang.String'" type="string" :disabled="!this.rw" v-model="current"/>
     <input v-if="type === 'boolean'" type="checkbox" :disabled="!this.rw" v-model="current">
     <input v-if="type === 'int'" type="number" :disabled="!this.rw" v-model="current">
     <input v-if="type === 'long'" type="number" :disabled="!this.rw" v-model="current">
-  </span>
+  </td>
 </template>
 
 <script>

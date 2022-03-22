@@ -1,17 +1,25 @@
 <template>
 
-  <section>
-    <input v-model="jmxServer.url" placeholder="url to jolokia"/>
-    <input type="button" @click="retrieveMBeans" value="Save Information" class="btn btn-block"/>
-  </section>
+
+  <div style="position: relative;">
+    <va-app-bar>
+      <va-input class="ma-1 fixed-500px" v-model="jmxServer.url" placeholder="url to jolokia" />
+      <va-button icon="search" @click="retrieveMBeans" color="#fff" flat :rounded="false" />
+      <va-spacer />
+      <va-button  color="#fff" flat :rounded="false">Login</va-button>
+    </va-app-bar>
+  </div>
+
 
   <section :key="mbean.id" v-for="mbean in mbeans" id="{{ mbean.id }}">
+  <va-collapse :header="mbean.id" v-model="collaspe[mbean.index]">
     <h2>{{ mbean.id }}</h2>
     <div :key="bean.name" v-for="bean in mbean.value">
     <h3>{{ bean.name }}: {{ bean.desc }}</h3>
     <mbean-attribute-list v-if="bean.attr" :attr="bean.attr" :id="mbean.id + ':' + bean.name"/>
     <mbean-operation-list v-if="bean.op" :op="bean.op" :id="mbean.id + ':' + bean.name"/>
     </div>
+  </va-collapse>
   </section>
 </template>
 
@@ -29,6 +37,7 @@ export default {
       jmxServer: {
         url: 'http:localhost:8080/actuator/jolokia'
       },
+      collaspe: [],
       mbeans: []
     }
 
@@ -44,6 +53,7 @@ export default {
     },
     mapToList: function (rawResult) {
       console.info("raw" + rawResult);
+      let index = 0;
       return _.transform(rawResult, function (result, value, key) {
         let flatValue = _.transform(value, function (result, value, key) {
           result.push({
@@ -55,6 +65,7 @@ export default {
           })
         }, []);
         result.push({
+          index: index++,
           id: key,
           value: flatValue
         });
@@ -65,5 +76,7 @@ export default {
 </script>
 
 <style scoped>
-
+.fixed-500px {
+  width: 500px;
+}
 </style>

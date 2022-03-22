@@ -1,15 +1,23 @@
 <template>
-  <h4>Attribute</h4>
-  <table v-if="this.attr">
-    <thead>
-    <td>Name</td>
-    <td>Input</td>
-    </thead>
-    <tr v-for="attribute in this.attributes" :key="attribute" >
-      <td>{{ attribute.name }}</td>
-      <td><mbean-attribute :type="attribute.type" :rw="attribute.rw" :desc="attribute.desc" :readUrl=attribute.readUrl /></td>
-    </tr>
-  </table>
+  <va-card color="#172226">
+    <va-card-title>Attribute</va-card-title>
+    <va-card-content>
+      <div class="va-table-responsive">
+        <table v-if="this.attr" class="va-table">
+          <thead>
+          <td>Name</td>
+          <td>Input</td>
+          <td>Value</td>
+          </thead>
+          <tr v-for="attribute in this.attributes" :key="attribute">
+            <td>{{ attribute.name }}</td>
+            <mbean-attribute :type="attribute.type" :rw="attribute.rw" :desc="attribute.desc"
+                             :readUrl=attribute.readUrl />
+          </tr>
+        </table>
+      </div>
+    </va-card-content>
+  </va-card>
 </template>
 
 <script>
@@ -44,9 +52,4 @@ export default {
 </script>
 
 <style scoped>
-table {
-  border: 1px aliceblue;
-  position: center;
-  text-align: center;
-}
 </style>
